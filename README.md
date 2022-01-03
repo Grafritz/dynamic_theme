@@ -68,6 +68,41 @@ When changing the brightness with `setBrightness`, it is additionally stored in 
 ### A dialog widget to change the brightness!
 ![](https://github.com/Norbert515/dynamic_theme/blob/master/assets/dialogs.png)
 
+
+```
+To change the color theme
+```
+FlutterDynamicTheme.of(context)?.setThemeData(new ThemeData(primarySwatch: Colors.red));
+```
+or
+```
+FlutterDynamicTheme.of(context)?.setThemeData(new ThemeData(primaryColor: Colors.red));
+```
+Show popUp to change Brightness or and Color at the same time.
+```
+void showChooser() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return BrightnessSwitcherDialog(
+          activeToggleMode: true,
+          activeColor: true,
+          textDarkMode: 'Mode Dark :(',
+          textLightMode: 'Light Mode :)',
+          onSelectedTheme: (Brightness brightness) {
+            FlutterDynamicTheme.of(context).setBrightness(brightness);
+          },
+        );
+      },
+    );
+  }
+```
+set ``activeColor: true`` to Activate option list of color
+```
+activeColor: true
+```
+![image](assets/Screenshot3.jpg)
+
 ## Getting Started
 
 For help getting started with Flutter, view our online [documentation](https://flutter.io/).

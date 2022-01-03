@@ -1,3 +1,4 @@
+import 'package:dynamic_theme/color_theme_dialog.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:dynamic_theme/theme_switcher_widgets.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +45,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               onPressed: DynamicTheme.of(context).toggleBrightness,
               child: const Text('Toggle brightness'),
             ),
-            RaisedButton(
-              onPressed: changeColor,
+            ElevatedButton(
+              onPressed: showChooser,
+              child: const Text('Pop Up Change brightness'),
+            ),
+            const Divider(),
+            ElevatedButton(
+              onPressed: showActionsSettingsColorTheme,
               child: const Text('Change color'),
             ),
           ],
@@ -60,17 +66,42 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.insert_drive_file),
-            title: const Text('Tab 1'),
+            label: 'Tab 1',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
-            title: const Text('Tab 2'),
+            label: 'Tab 2',
           ),
         ],
       ),
+    );
+  }
+
+  void showActionsSettingsColorTheme() {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return const ColorThemeDialog();
+        });
+  }
+  void showChooser2() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return BrightnessSwitcherDialog(
+          activeToggleMode: true,
+          activeColor: true,
+          textDarkMode: 'Mode Dark :(',
+          textLightMode: 'Light Mode :)',
+          onSelectedTheme: (Brightness brightness) {
+            DynamicTheme.of(context).setBrightness(brightness);
+          },
+        );
+      },
     );
   }
 
@@ -79,6 +110,8 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return BrightnessSwitcherDialog(
+          activeToggleMode: true,
+          activeColor: true,
           onSelectedTheme: (Brightness brightness) {
             DynamicTheme.of(context).setBrightness(brightness);
           },

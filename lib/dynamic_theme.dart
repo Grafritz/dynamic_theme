@@ -1,19 +1,18 @@
 import 'dart:async';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dynamic_theme/dynamic_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-typedef ThemedWidgetBuilder = Widget Function(
-    BuildContext context, ThemeData data);
+typedef ThemedWidgetBuilder = Widget Function(BuildContext context, ThemeData data);
 
-typedef ThemeDataWithBrightnessBuilder = ThemeData Function(
-    Brightness brightness);
+typedef ThemeDataWithBrightnessBuilder = ThemeData Function(Brightness brightness);
 
 class DynamicTheme extends StatefulWidget {
   const DynamicTheme({
-    Key key,
-    this.data,
-    this.themedWidgetBuilder,
+    Key? key,
+    required this.data,
+    required this.themedWidgetBuilder,
     this.defaultBrightness = Brightness.light,
     this.loadBrightnessOnStart = true,
   }) : super(key: key);
@@ -37,19 +36,20 @@ class DynamicTheme extends StatefulWidget {
   @override
   DynamicThemeState createState() => DynamicThemeState();
 
-  static DynamicThemeState of(BuildContext context) {
-    return context.findAncestorStateOfType<State<DynamicTheme>>();
+  static DynamicThemeState? of(BuildContext context) {
+    return context.findAncestorStateOfType<DynamicThemeState>();
   }
 }
 
 class DynamicThemeState extends State<DynamicTheme> {
-  ThemeData _themeData;
+  late ThemeData _themeData;
 
-  Brightness _brightness;
+  Brightness _brightness = Brightness.light;
 
-  bool _shouldLoadBrightness;
+  bool _shouldLoadBrightness = true;
 
   static const String _sharedPreferencesKey = 'isDark';
+  static const String _sharedPreferencesColorKey = 'primarySwatchColor';
 
   /// Get the current `ThemeData`
   ThemeData get themeData => _themeData;
@@ -106,6 +106,12 @@ class DynamicThemeState extends State<DynamicTheme> {
     });
     // Save the brightness
     await _saveBrightness(brightness);
+    //var _primarySwatch = await getPrimarySwatch();
+
+    // To  retrive the last color Primary
+    if (_brightness != Brightness.dark) {
+      setThemeData(ThemeData(primarySwatch: await getPrimarySwatch()));
+    }
   }
 
   /// Toggles the brightness from dark to light
@@ -123,8 +129,31 @@ class DynamicThemeState extends State<DynamicTheme> {
     setState(() {
       _themeData = data;
     });
+    // Save the primarySwatch
+    _setPrimarySwatch(data.primaryColor);
+    _saveBrightness(Brightness.light);
   }
 
+  /// Returns a color that gives you the latest PrimarySwatch
+   Future getPrimarySwatch() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Gets the color stored in prefs
+    // Or returns the `primarySwatch` color or the default color
+    final int key = prefs.getInt(_sharedPreferencesColorKey)??1;
+    return DynamicColors.primaryColor[ key ];
+  }
+  /// Saves the PrimarySwatch in `SharedPreferences`
+  Future<void> _setPrimarySwatch(Color primarySwatch) async {
+    //print('primarySwatch:$primarySwatch');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // get the Id of primarySwatch
+    final int index = DynamicColors.primaryColor.indexWhere((MaterialColor e) => e==primarySwatch).round();
+    //print('index:$index');
+    final int valColor = index<0?1:index;
+    //print('valColor:$valColor');
+    // Saves _primarySwatch color
+    await prefs.setInt( _sharedPreferencesColorKey, valColor);
+  }
   /// Saves the provided brightness in `SharedPreferences`
   Future<void> _saveBrightness(Brightness brightness) async {
     //! Shouldn't save the brightness if you don't want to load it
@@ -142,8 +171,7 @@ class DynamicThemeState extends State<DynamicTheme> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Gets the bool stored in prefs
     // Or returns whether or not the `defaultBrightness` is dark
-    return prefs.getBool(_sharedPreferencesKey) ??
-        widget.defaultBrightness == Brightness.dark;
+    return prefs.getBool(_sharedPreferencesKey) ?? widget.defaultBrightness == Brightness.dark;
   }
 
   @override
