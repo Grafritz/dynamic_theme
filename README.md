@@ -73,16 +73,19 @@ When changing the brightness with `setBrightness`, it is additionally stored in 
 ![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot2.jpg)
 
 
-```
+
 To change the color theme
 ```
 FlutterDynamicTheme.of(context)?.setThemeData(new ThemeData(primarySwatch: Colors.red));
 ```
 or
+
 ```
 FlutterDynamicTheme.of(context)?.setThemeData(new ThemeData(primaryColor: Colors.red));
 ```
+
 Show popUp to change Brightness or and Color at the same time.
+
 ```
 void showChooser() {
     showDialog<void>(
