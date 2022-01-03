@@ -102,10 +102,10 @@ set ``activeColor: true`` to Activate option list of color
 activeColor: true
 ```
 
-![image](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot1.jpg)
-![image](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot2.jpg)
+![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot1.jpg)
+![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot2.jpg)
 
-![image](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot3.jpg)
+![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot3.jpg)
 
 ## Getting Started
 
