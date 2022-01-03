@@ -68,6 +68,10 @@ When changing the brightness with `setBrightness`, it is additionally stored in 
 ### A dialog widget to change the brightness!
 ![](https://github.com/Norbert515/dynamic_theme/blob/master/assets/dialogs.png)
 
+![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot1.jpg)
+
+![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot2.jpg)
+
 
 ```
 To change the color theme
@@ -98,12 +102,6 @@ void showChooser() {
   }
 ```
 set ``activeColor: true`` to Activate option list of color
-```
-activeColor: true
-```
-
-![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot1.jpg)
-![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot2.jpg)
 
 ![](https://github.com/grafritz/dynamic_theme/blob/master/assets/Screenshot3.jpg)
 
